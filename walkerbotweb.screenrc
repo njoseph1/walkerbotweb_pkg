@@ -48,7 +48,7 @@ stuff "source setup.sh
 "
 stuff "roscore
 "
-#stuff ""
+stuff ""
 
 #screen -t " mode_controller"
 #stuff "source setup.sh
