@@ -77,7 +77,7 @@
 
   <table summary="hostname" border="1" width=800>
     <tr>
-      <td>Hostname: <input type="text" id="hostname" value="192.168.7.2" onchange="init()" /><input type="submit" value="Connect" name="submit" onclick="init()" /></td>
+      <td>Hostname: <input type="text" id="hostname" value="ubiquityrobot" onchange="init()" /><input type="submit" value="Connect" name="submit" onclick="init()" /></td>
       <td>Connection status:
         <div id="statusMessage">Initial value.</div>
       </td>
@@ -204,7 +204,7 @@
 
     <tr>
       <td>Make sure you run <pre>rosrun web_video_server web_video_server</pre> and the image stream.
-        <br/> Topic: <input type="text" id="imagetopic" value="/raspicam_node/image_raw" onchange="imageStream()" />
+        <br/> Topic: <input type="text" id="imagetopic" value="/walkerbotweb/image_raw" onchange="imageStream()" />
       </td>
     </tr>
   </table>
