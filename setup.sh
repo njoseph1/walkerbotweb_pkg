@@ -10,4 +10,4 @@ source ../../devel/setup.bash
 export ROS_IP=192.168.42.1
 #export ROS_HOSTNAME=<enterhostnamehere>
 #export ROS_MASTER_URI=http://<enterhostnamehere>:11311
-export PS1="\[\033[00;33m\][pidrone - ${ROS_MASTER_URI}]\[\033[00m\] $PS1"
+export PS1="\[\033[00;33m\][walkerbot - ${ROS_MASTER_URI}]\[\033[00m\] $PS1"
