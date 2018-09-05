@@ -9,10 +9,10 @@ from cv_bridge import CvBridge
 
 
 class ImageReshaper (picamera.array.PiMotionAnalysis) :
-    def setup(self);
+    def setup(self):
         self.image=none 
 
-    def write(self, data);
+    def write(self, data):
         self.image = np.reshape(np.fromstring(data, dtype=np.uint8), (240, 320, 3))
     
 
@@ -23,7 +23,7 @@ def main():
 
     image_pub = rospy.Publisher("/walkerbotweb/image_raw", Image, queue_size=1, tcp_nodelay=False)
 
-    print "Vision started"
+    print "Vision Started"
 
     try:
         bridge = CvBridge()
