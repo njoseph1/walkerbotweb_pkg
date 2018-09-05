@@ -2,6 +2,7 @@ import sys
 import os
 import rospy
 import picamera
+import picamera.array
 import numpy
 from sensor_msgs.msg import Image
 
