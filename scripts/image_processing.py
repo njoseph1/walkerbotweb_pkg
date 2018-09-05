@@ -21,7 +21,7 @@ def main():
     
     rospy.init_node('camera')
 
-    image_pub = rospy.Publisher("/walkerbotweb", Image, queue_size=1, tcp_nodelay=False)
+    image_pub = rospy.Publisher("/walkerbotweb/image_raw", Image, queue_size=1, tcp_nodelay=False)
 
     print "Vision started"
 
