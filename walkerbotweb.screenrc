@@ -55,3 +55,7 @@ stuff "sleep 10s && roslaunch rosbridge_server rosbridge_websocket.launch\n"
 screen -t " web_video_server"
 stuff "source setup.sh\n"
 stuff " rosrun web_video_server web_video_server\n"
+
+screen -t " image_processing"
+stuff "source setup.sh\n"
+stuff " python3 image_processing.py\n"
