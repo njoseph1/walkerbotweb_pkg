@@ -11,7 +11,7 @@ from cv_bridge import CvBridge
 
 class ImageReshaper (picamera.array.PiMotionAnalysis) :
     def setup(self):
-        self.image=none 
+        self.image = None 
 
     def write(self, data):
         self.image = np.reshape(np.fromstring(data, dtype=np.uint8), (240, 320, 3))
