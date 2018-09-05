@@ -1,4 +1,4 @@
-# based on https://github.com/h2r/pidrone_pkg/blob/master/pi.screenrc
+#
 # various settings suggested by other users
 #
 # derived from the Paradox pair programming screenrc, UChicago 2010
@@ -44,21 +44,87 @@ acladd stefie10
 "
 
 screen -t " roscore"
--X stuff "source setup.sh
+stuff "source setup.sh
 "
--X stuff "roscore
+stuff "roscore
 "
--X stuff "
+stuff ""
+
+screen -t " mode_controller"
+stuff "source setup.sh
 "
+stuff "cd $(rospack find pidrone_pkg)/scripts
+"
+stuff "python mode_controller.py" # starting mode controller automatically is unsafe
+
+screen -t " command_line_interface"
+stuff "source setup.sh\n"
+stuff "cd $(rospack find pidrone_pkg)/scripts/\n"
+stuff "python command_line_interface.py\n"
+
+screen -t " flight_controller"
+stuff "source setup.sh\n"
+stuff "cd $(rospack find pidrone_pkg)/scripts/\n"
+stuff "python flight_controller_node.py\n"
+
+screen -t " pid_controller"
+stuff "source setup.sh\n"
+stuff "cd $(rospack find pidrone_pkg)/scripts/\n"
+stuff "python pid_controller.py\n"
+
+screen -t " state_estimator"
+stuff "source setup.sh\n"
+stuff "cd $(rospack find pidrone_pkg)/scripts/\n"
+stuff "python state_estimator.py\n"
+
+screen -t " vision"
+stuff "source setup.sh\n"
+stuff "cd $(rospack find pidrone_pkg)/scripts\n"
+stuff "python vision_flow_and_phase.py\n"
+
+screen -t " infrared"
+stuff "source setup.sh\n"
+stuff "cd $(rospack find pidrone_pkg)/scripts/\n"
+stuff "python infrared_pub.py\n"
 
 screen -t " rosbridge"
--X stuff "source setup.sh
+stuff "source setup.sh
 "
--X stuff "sleep 10s && roslaunch rosbridge_server rosbridge_websocket.launch
+stuff "sleep 10s && roslaunch rosbridge_server rosbridge_websocket.launch
 "
 
 screen -t " web_video_server"
--X stuff "source setup.sh
+stuff "source setup.sh
 "
--X stuff " rosrun web_video_server web_video_server
+stuff " rosrun web_video_server web_video_server"
+
+screen -t " vim"
+stuff "source setup.sh\n"
+stuff "cd $(rospack find pidrone_pkg)/scripts\n"
+stuff "vim -p flow_pub_transform.py state_controller.py pid_class.py\n"
+
+screen -t " emacs"
+stuff "source setup.sh\n"
+stuff "cd $(rospack find pidrone_pkg)/scripts\n"
+stuff "emacs\n"
+
+screen -t " free"
+stuff "source setup.sh
 "
+stuff "cd $(rospack find pidrone_pkg)/scripts/
+"
+
+screen -t " throttle_ir"
+stuff "source setup.sh\n"
+stuff "cd $(rospack find pidrone_pkg)/scripts\n"
+stuff "rosrun topic_tools throttle messages /pidrone/infrared 10.0\n"
+
+screen -t " throttle_imu"
+stuff "source setup.sh\n"
+stuff "cd $(rospack find pidrone_pkg)/scripts\n"
+stuff "rosrun topic_tools throttle messages /pidrone/imu 10.0\n"
+
+screen -t " throttle_optical_flow"
+stuff "source setup.sh\n"
+stuff "cd $(rospack find pidrone_pkg)/scripts\n"
+stuff "rosrun topic_tools throttle messages /pidrone/picamera/twist 10.0\n"
