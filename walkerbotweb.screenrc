@@ -44,19 +44,14 @@ acladd stefie10
 "
 
 screen -t " roscore"
-stuff "source setup.sh
-"
-stuff "roscore
-"
+stuff "source setup.sh"
+stuff "roscore"
 stuff ""
 
 screen -t " rosbridge"
-stuff "source setup.sh
-"
-stuff "sleep 10s && roslaunch rosbridge_server rosbridge_websocket.launch
-"
+stuff "source setup.sh"
+stuff "sleep 10s && roslaunch rosbridge_server rosbridge_websocket.launch"
 
 screen -t " web_video_server"
-stuff "source setup.sh
-"
+stuff "source setup.sh"
 stuff " rosrun web_video_server web_video_server"
