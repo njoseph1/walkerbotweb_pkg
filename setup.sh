@@ -1,3 +1,4 @@
+# based on https://github.com/h2r/pidrone_pkg/blob/master/setup.sh
 # This is an example from Stefanie's ethernet environment.  Copy to
 # your ws root directory and change the variables appropriately.  This
 # is supposed to be like ./baxter.sh.  It sets environment variables
