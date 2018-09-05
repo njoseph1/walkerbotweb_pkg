@@ -42,7 +42,7 @@ def main():
                             image_message = bridge.cv2_to_imgmsg(image_reshaper.previous_image, encoding="bgr8")
                             image_pub.publish(image_message)
 
-                camera.stop_recording()  # stop recording both the flow
+            camera.stop_recording()  # stop recording both the flow
 
 
         print "Shutdown Received"
