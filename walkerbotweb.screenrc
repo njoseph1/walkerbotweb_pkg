@@ -1,4 +1,4 @@
-#
+# based on https://github.com/h2r/pidrone_pkg/blob/master/pi.screenrc
 # various settings suggested by other users
 #
 # derived from the Paradox pair programming screenrc, UChicago 2010
@@ -44,19 +44,21 @@ acladd stefie10
 "
 
 screen -t " roscore"
-stuff "source setup.sh
+-X stuff "source setup.sh
 "
-stuff "roscore
+-X stuff "roscore
 "
-stuff ""
+-X stuff "
+"
 
 screen -t " rosbridge"
-stuff "source setup.sh
+-X stuff "source setup.sh
 "
-stuff "sleep 10s && roslaunch rosbridge_server rosbridge_websocket.launch
+-X stuff "sleep 10s && roslaunch rosbridge_server rosbridge_websocket.launch
 "
 
 screen -t " web_video_server"
-stuff "source setup.sh
+-X stuff "source setup.sh
 "
-stuff " rosrun web_video_server web_video_server"
+-X stuff " rosrun web_video_server web_video_server
+"
