@@ -44,11 +44,9 @@ acladd stefie10
 "
 
 screen -t " roscore"
-stuff "source setup.sh
-"
-stuff "roscore
-"
-stuff ""
+stuff "source setup.sh\n"
+stuff "roscore\n"
+stuff "\n"
 
 #screen -t " mode_controller"
 #stuff "source setup.sh
@@ -88,15 +86,12 @@ stuff ""
 #stuff "python infrared_pub.py\n"
 
 screen -t " rosbridge"
-stuff "source setup.sh
-"
-stuff "sleep 10s && roslaunch rosbridge_server rosbridge_websocket.launch
-"
+stuff "source setup.sh\n"
+stuff "sleep 10s && roslaunch rosbridge_server rosbridge_websocket.launch\n"
 
 screen -t " web_video_server"
-stuff "source setup.sh
-"
-stuff " rosrun web_video_server web_video_server"
+stuff "source setup.sh\n"
+stuff " rosrun web_video_server web_video_server\n"
 
 #screen -t " vim"
 #stuff "source setup.sh\n"
