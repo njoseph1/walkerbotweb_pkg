@@ -34,16 +34,16 @@ Software
 How to Use
   1. Flash the pi image onto the SD card.
   2. Connect all the hardware. Feel free to use a keyboard and mouse with the Pi to ensure that it is on the same WiFi network as your base station 
-  3. Open up a terminal on your base station and ssh into the pi by doing ssh pi@***
-  4. Go to the src folder of your catkin workspace ()~/catkin_ws/src and clone the github repository by typing git clone https://github.com/njoseph1/walkerbotweb_pkg
+  3. Open up a terminal on your base station and ssh into the pi by doing `ssh pi@***`
+  4. Go to the src folder of your catkin workspace `~/catkin_ws/src` and clone the github repository by typing `git clone https://github.com/njoseph1/walkerbotweb_pkg`
   5. Navigate to you catkin director again by typing ~/catkin_ws 
-  6. Now run catkin_make --pkg walkerbotweb_pkg to create messages.
-  7. if you've change you robot's hostname, edit ~/catkin_ws/src/walkerbotweb_pkg/setup.sh so that ROS_HOSTNAME is your chosen hostname.
-  8. Now we need to start screen. Do so by going to ~/catkin_ws/src/walkerbotweb_pkg and running screen -c <walkerbotweb.screenrc> without brackets. This is a custom congifuation file with four screens.
-    `0 is running roscore
-    `1 is running rosbrdige
-    `2 is running web_video_server
-    `3 is running image_processing.py
+  6. Now run `catkin_make --pkg walkerbotweb_pkg` to create messages.
+  7. if you've change you robot's hostname, edit `~/catkin_ws/src/walkerbotweb_pkg/setup.sh` so that ROS_HOSTNAME is your chosen hostname.
+  8. Now we need to start screen. Do so by going to `~/catkin_ws/src/walkerbotweb_pkg` and running `screen -c walkerbotweb.screenrc`. This is a custom congifuation file with four screens.
+    ~0 is running roscore
+    ~1 is running rosbrdige
+    ~2 is running web_video_server
+    ~3 is running image_processing.py
     
     Make sure these programs started properly by cycling through the screen terminals. If roscore failed to start (usually due to another instance of roscore/rosmaster aready running, type killall -9 roscore to kill these processes. You then need to start the processes in each screen over again. You can see what the commands are in the screen windows by navigating to the windows and pressing the up key, or by checking out the walkerbotweb.screenrc file in the repository.
     
@@ -51,5 +51,6 @@ How to Use
   10. Click connect. The status should change to a green-colored "Connected!" message and a video should start streaming in the camera area.
   
   To Do
-  1. The index.html file has the base code for publishing twist commands to WalkerBot via keyboard input. Figure out the correct syntax for assigning the twistMessage linear x and twistMessage angular z (for instance, twistMsg.angular.z = turnSpeed is logically correct sudo code but needs to be properly formatted to be integrated with the exisiting Walkerbot infastructure).
+  1. The index.html file has the base code for publishing twist commands to WalkerBot via keyboard input. Figure out the correct syntax for assigning the twistMessage linear x and twistMessage angular z (for instance, twistMsg.angular.z = turnSpeed is logically correct sudo code but needs to be properly formatted to be integrated with the exisiting WalkerBot infastructure).
+  2. Integrate the WalkerBot web system with the existing walkerbot infrastructure and test if the Twist messages make WalkerBot move as expected! 
  
