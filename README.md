@@ -40,10 +40,10 @@ How to Use
   6. Now run `catkin_make --pkg walkerbotweb_pkg` to create messages.
   7. if you've change you robot's hostname, edit `~/catkin_ws/src/walkerbotweb_pkg/setup.sh` so that ROS_HOSTNAME is your chosen hostname.
   8. Now we need to start screen. Do so by going to `~/catkin_ws/src/walkerbotweb_pkg` and running `screen -c walkerbotweb.screenrc`. This is a custom congifuation file with four screens.
-    ~0 is running roscore
+   ``` ~0 is running roscore
     ~1 is running rosbrdige
     ~2 is running web_video_server
-    ~3 is running image_processing.py
+    ~3 is running image_processing.py ```
     
     Make sure these programs started properly by cycling through the screen terminals. If roscore failed to start (usually due to another instance of roscore/rosmaster aready running, type killall -9 roscore to kill these processes. You then need to start the processes in each screen over again. You can see what the commands are in the screen windows by navigating to the windows and pressing the up key, or by checking out the walkerbotweb.screenrc file in the repository.
     
