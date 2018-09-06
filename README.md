@@ -5,7 +5,7 @@ Files for WalkerBot web control
 
 In order to view the video stream from the WalkerbotWeb's camera, you need to have a computer to act as your base station. 
 
-### Base station requirements:
+Base station requirements:
   1. Any operating system
   2. Must have SSH (https://en.wikipedia.org/wiki/Secure_Shell) installed 
   3. Chrome (this is the browser used in testing. Any browser should theoretically suffice)
