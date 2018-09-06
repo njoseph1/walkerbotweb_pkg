@@ -57,6 +57,6 @@ Base station requirements:
   3. Integrate the WalkerBot web system with the existing walkerbot infrastructure and test if the Twist messages make WalkerBot move as expected! 
   
 ## Invaluable References
-http://www.theconstructsim.com/publish-image-stream-ros-kinetic-raspberry-pi/
+http://www.theconstructsim.com/publish-image-stream-ros-kinetic-raspberry-pi/ and
 https://github.com/h2r/pidrone_pkg
  
