@@ -51,7 +51,7 @@ Base station requirements:
   9. Open up the index.html file and click connect. Please change your host name in the dialog box if you edited it from the original name. 
   10. Click connect. The status should change to a green-colored "Connected!" message and a video should start streaming in the camera area. If the green "Connected!" eventually changes to the red "Connection Closed" message, do not worry. This is a bug that does not affect anything. Your video should still be streaming.
   
-  To Do
+## To Do
   1. The index.html file has the base code for publishing twist commands to WalkerBot via keyboard input. Figure out the correct syntax for assigning the twistMessage linear x and twistMessage angular z (for instance, twistMsg.angular.z = turnSpeed is logically correct sudo code but needs to be properly formatted to be integrated with the exisiting WalkerBot infastructure).
   2. Integrate the WalkerBot web system with the existing walkerbot infrastructure and test if the Twist messages make WalkerBot move as expected! 
  
