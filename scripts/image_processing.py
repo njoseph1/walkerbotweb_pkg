@@ -5,7 +5,6 @@ import picamera
 import picamera.array
 import numpy
 from sensor_msgs.msg import Image
-
 from cv_bridge import CvBridge
 
 
@@ -19,7 +18,6 @@ class ImageReshaper (picamera.array.PiMotionAnalysis):
 
 
 def main():
-
     rospy.init_node('camera')
 
     image_pub = rospy.Publisher(
