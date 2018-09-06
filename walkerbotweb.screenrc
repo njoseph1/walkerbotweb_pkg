@@ -56,7 +56,9 @@ screen -t " web_video_server"
 stuff "source setup.sh\n"
 stuff " rosrun web_video_server web_video_server\n"
 
-screen -t " image_processing"
-stuff "source setup.sh\n"
-stuff "cd $(rospack find walkerbotweb_pkg)/scripts\n"
-stuff "python image_processing.py\n"
+screen -t " raspicam_node"
+stuff "source devel/setup.bash\n"
+stuff "roslaunch raspicam_node camera_module_v2_640x480_30fps.launch\n"
+
+screen -t " camera_service"
+stuff "rosservice call /raspicam_node/start_capture\n"
