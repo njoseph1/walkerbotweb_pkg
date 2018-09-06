@@ -39,7 +39,7 @@ Base station requirements:
   5. Navigate to you catkin director again by typing ~/catkin_ws 
   6. Now run `catkin_make --pkg walkerbotweb_pkg` to create messages.
   7. if you've change you robot's hostname, edit `~/catkin_ws/src/walkerbotweb_pkg/setup.sh` so that ROS_HOSTNAME is your chosen hostname.
-  8. Now we need to start screen. Do so by going to `~/catkin_ws/src/walkerbotweb_pkg` and running `screen -c walkerbotweb.screenrc`. This is a custom congifuation file with four screens.
+  8. Now we need to start screen. Do so by going to `~/catkin_ws/src/walkerbotweb_pkg` and running `screen -c walkerbotweb.screenrc`. This is a custom congifuation file with five screens.
     ~0 is running roscore
     ~1 is running rosbrdige
     ~2 is running web_video_server
@@ -55,4 +55,8 @@ Base station requirements:
   1. Change keyboard input in the index file to button input.
   2. The index.html file has the base code for publishing twist commands to WalkerBot via keyboard input. Figure out the correct syntax for assigning the twistMessage linear x and twistMessage angular z (for instance, twistMsg.angular.z = turnSpeed is logically correct sudo code but needs to be properly formatted to be integrated with the exisiting WalkerBot infastructure).
   3. Integrate the WalkerBot web system with the existing walkerbot infrastructure and test if the Twist messages make WalkerBot move as expected! 
+  
+## Invaluable References
+http://www.theconstructsim.com/publish-image-stream-ros-kinetic-raspberry-pi/
+https://github.com/h2r/pidrone_pkg
  
