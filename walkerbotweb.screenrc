@@ -44,8 +44,8 @@ acladd stefie10
 "
 
 screen -t " roscore"
-stuff "killall -9 roscore"
-stuff "killall -9 rosmaster"
+stuff "killall -9 roscore\n"
+stuff "killall -9 rosmaster\n"
 stuff "source setup.sh\n"
 stuff "roscore\n"
 stuff "\n"
