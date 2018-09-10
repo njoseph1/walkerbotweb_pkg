@@ -56,11 +56,11 @@ stuff "sleep 10s && roslaunch rosbridge_server rosbridge_websocket.launch\n"
 
 screen -t " web_video_server"
 stuff "source setup.sh\n"
-stuff " rosrun web_video_server web_video_server\n"
+stuff "sleep 15s && rosrun web_video_server web_video_server\n"
 
 screen -t " raspicam_node"
 stuff "source devel/setup.bash\n"
-stuff "roslaunch raspicam_node camera_module_v2_640x480_30fps.launch\n"
+stuff "sleep 18s && roslaunch raspicam_node camera_module_v2_640x480_30fps.launch\n"
 
 screen -t " camera_service"
-stuff "rosservice call /raspicam_node/start_capture\n"
+stuff "sleep 20s && rosservice call /raspicam_node/start_capture\n"
