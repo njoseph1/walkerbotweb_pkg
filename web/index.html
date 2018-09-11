@@ -11,18 +11,16 @@
 
   <script type="text/javascript">
     var ros;
-    var cmdVel;
+    var twistMsg;
     var twist;
-    var motorSpeed;
-    var turnSpeed;
-
+    var linearSpeed;
+    var angularSpeed;
     function init() {
       // Connects to ROS.
       var url = 'ws://' + document.getElementById('hostname').value + ':9090'
       ros = new ROSLIB.Ros({
         url: url
       });
-
       function closeSession() {
         console.log("Closing connections.");
         ros.disconnect();
@@ -44,10 +42,8 @@
         //printProperties(error);
         document.getElementById('statusMessage').innerHTML = "<p style='color:red'>Connection closed.</p>";
       });
-
       imageStream();
     }
-
     function imageStream() {
       var image = document.getElementById('cameraImage');
       image.src = "http://" + document.getElementById('hostname').value + ":8080/stream?topic=/raspicam_node/image_raw&quality=70";
@@ -73,38 +69,38 @@
       <td>
         <b> Set the Initial Parameters </b>
         <br/>
-        <br/> 1. Drag Motor Speed Slider (Range: 0 to 2)
+        <br/> 1. Drag Linear Speed Slider (Range: 0 to 0.2)
         <br/><br/>
 
         <div class="slidecontainer">
-          <input type="range" min="0" max="2" step=0.1 value="0" class="slider" id="motorSpeedID"  /> Motor Speed Value: <span id="motorSpeedSliderOutput"></span>
+          <input type="range" min="0" max="0.2" step=0.01 value="0" class="slider" id="linearSpeedID"  /> Linear Speed Value: <span id="linearSpeedSliderOutput"></span>
         </div>
 
         <script>
-          var motorSpeedSlider = document.getElementById("motorSpeedID");
-          var motorSpeedOutput = document.getElementById("motorSpeedSliderOutput");
-          motorSpeedOutput.innerHTML = motorSpeedSlider.value; // Display the default slider value
+          var linearSpeedSlider = document.getElementById("linearSpeedID");
+          var linearSpeedOutput = document.getElementById("linearSpeedSliderOutput");
+          linearSpeedOutput.innerHTML = linearSpeedSlider.value; // Display the default slider value
           // Update the current slider value (each time you drag the slider handle)
-          motorSpeedSlider.oninput = function() {
-            motorSpeedOutput.innerHTML = this.value;
+          linearSpeedSlider.oninput = function() {
+            linearSpeedOutput.innerHTML = this.value;
           }
         </script>
 
         <br/>
-        <br/> 2. Drag Turn Speed Slider (Range: 0 to 2)
+        <br/> 2. Drag Angular Speed Slider (Range: 0 to 0.6)
         <br/><br/>
 
         <div class="slidecontainer">
-          <input type="range" min="0" max="2" step=0.1 value="0" class="slider" id="turnSpeedID"  /> Turn Speed Value: <span id="turnSpeedSliderOutput"></span>
+          <input type="range" min="0" max="0.6" step=0.01 value="0" class="slider" id="angularSpeedID"  /> Angular Speed Value: <span id="angularSpeedSliderOutput"></span>
         </div>
 
         <script>
-          var turnSpeedSlider = document.getElementById("turnSpeedID");
-          var turnSpeedOutput = document.getElementById("turnSpeedSliderOutput");
-          turnSpeedOutput.innerHTML = turnSpeedSlider.value; // Display the default slider value
+          var angularSpeedSlider = document.getElementById("angularSpeedID");
+          var angularSpeedOutput = document.getElementById("angularSpeedSliderOutput");
+          angularSpeedOutput.innerHTML = angularSpeedSlider.value; // Display the default slider value
           // Update the current slider value (each time you drag the slider handle)
-          turnSpeedSlider.oninput = function() {
-            turnSpeedOutput.innerHTML = this.value;
+          angularSpeedSlider.oninput = function() {
+            angularSpeedOutput.innerHTML = this.value;
           }
         </script>
 
@@ -114,32 +110,22 @@
       </td>
     </tr>
 
-    
+
     <td>
       <b> Touch Screen Control </b>
       <br/>
       <br/>
 
       <script type="text/javascript">
-        function setMotorSpeed() {
-          motorSpeed = document.getElementById('motorSpeedID').value;
-          console.log(motorSpeed);
-        }
-
-        function setTurnSpeed() {
-          turnSpeed = document.getElementById('turnSpeedID').value;
-          console.log(turnSpeed);
-        }
-
         function publishTurnMotorsOff() {
           console.log("motors turned off");
 
-          cmdVel = new ROSLIB.Topic({
+          twist = new ROSLIB.Topic({
             ros: ros,
-            name: '/cmd_vel',
+            name: '/twist',
             messageType: 'geometry_msgs/Twist'
           });
-          twist = new ROSLIB.Message({
+          twistMsg = new ROSLIB.Message({
             linear: {
               x: 0.0,
               y: 0.0,
@@ -151,25 +137,22 @@
               z: -0.0
             }
           });
-          cmdVel.publish(twist);
-        }
+          twist.publish(twistMsg);
 
+        }
         function publishMoveForwards() {
           console.log("move forward");
-
-          cmdVel = new ROSLIB.Topic({
+          twist = new ROSLIB.Topic({
             ros: ros,
-            name: '/cmd_vel',
+            name: '/twist',
             messageType: 'geometry_msgs/Twist'
           });
-
-          var motorSpeedText = document.getElementById('motorSpeedID').value;
-          var motorSpeedNum = parseFloat(motorSpeedText, 10);
-          console.log(motorSpeedNum);
-
-          twist = new ROSLIB.Message({
+          var linearSpeedText = document.getElementById('linearSpeedID').value;
+          var linearSpeedNum = parseFloat(linearSpeedText, 10);
+          console.log(linearSpeedNum);
+          twistMsg = new ROSLIB.Message({
             linear: {
-              x: motorSpeedNum,
+              x: linearSpeedNum,
               y: 0.0,
               z: 0.0
             },
@@ -179,25 +162,21 @@
               z: -0.0
             }
           });
-          cmdVel.publish(twist);
+          twist.publish(twistMsg);
         }
-
         function publishMoveBackwards() {
           console.log("move backwards");
-
-          cmdVel = new ROSLIB.Topic({
+          twist = new ROSLIB.Topic({
             ros: ros,
-            name: '/cmd_vel',
+            name: '/twist',
             messageType: 'geometry_msgs/Twist'
           });
-
-          var motorSpeedText = document.getElementById('motorSpeedID').value;
-          var motorSpeedNum = parseFloat(motorSpeedText, 10);
-          console.log(motorSpeedNum);
-
-          twist = new ROSLIB.Message({
+          var linearSpeedText = document.getElementById('linearSpeedID').value;
+          var linearSpeedNum = parseFloat(linearSpeedText, 10);
+          console.log(linearSpeedNum);
+          twistMsg = new ROSLIB.Message({
             linear: {
-              x: -motorSpeedNum,
+              x: -linearSpeedNum,
               y: 0.0,
               z: 0.0
             },
@@ -207,23 +186,19 @@
               z: -0.0
             }
           });
-          cmdVel.publish(twist);
+          twist.publish(twistMsg);
         }
-
         function publishTurnLeft() {
           console.log("turn left");
-
-          cmdVel = new ROSLIB.Topic({
+          twist = new ROSLIB.Topic({
             ros: ros,
-            name: '/cmd_vel',
+            name: '/twist',
             messageType: 'geometry_msgs/Twist'
           });
-
-          var turnSpeedText = document.getElementById('turnSpeedID').value;
-          var turnSpeedNum = parseFloat(turnSpeedText, 10);
-          console.log(turnSpeedNum);
-
-          twist = new ROSLIB.Message({
+          var angularSpeedText = document.getElementById('angularSpeedID').value;
+          var angularSpeedNum = parseFloat(angularSpeedText, 10);
+          console.log(angularSpeedNum);
+          twistMsg = new ROSLIB.Message({
             linear: {
               x: 0.0,
               y: 0.0,
@@ -232,27 +207,22 @@
             angular: {
               x: -0.0,
               y: -0.0,
-              z: turnSpeedNum
+              z: angularSpeedNum
             }
           });
-          //twist.angular.z = turnSpeed
-          cmdVel.publish(twist);
+          twist.publish(twistMsg);
         }
-
         function publishTurnRight() {
           console.log("turn right");
-
-          cmdVel = new ROSLIB.Topic({
+          twist = new ROSLIB.Topic({
             ros: ros,
-            name: '/cmd_vel',
+            name: '/twist',
             messageType: 'geometry_msgs/Twist'
           });
-
-          var turnSpeedText = document.getElementById('turnSpeedID').value;
-          var turnSpeedNum = parseFloat(turnSpeedText, 10);
-          console.log(turnSpeedNum);
-
-          twist = new ROSLIB.Message({
+          var angularSpeedText = document.getElementById('angularSpeedID').value;
+          var angularSpeedNum = parseFloat(angularSpeedText, 10);
+          console.log(angularSpeedNum);
+          twistMsg = new ROSLIB.Message({
             linear: {
               x: 0.0,
               y: 0.0,
@@ -261,11 +231,10 @@
             angular: {
               x: -0.0,
               y: -0.0,
-              z: -turnSpeedNum
+              z: -angularSpeedNum
             }
           });
-          //twist.angular.z = (-1) * turnSpeed
-          cmdVel.publish(twist);
+          twist.publish(twistMsg);
         }
       </script>
 
