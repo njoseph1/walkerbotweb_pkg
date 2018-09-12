@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="button-styles.css">
+
+  <title>Interface to Walkerbot</title>
+
+  <script type="text/javascript" src="eventemitter2.min.js"></script>
+  <script type="text/javascript" src="roslib.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+  <script type="text/javascript">
+    var ros;
+    var twistMsg;
+    var twist;
+    var linearSpeed;
+    var angularSpeed;
+
+    function init() {
+      // Connects to ROS.
+      var url = 'ws://' + document.getElementById('hostname').value + ':9090'
+      ros = new ROSLIB.Ros({
+        url: url
+      });
+
+      function closeSession() {
+        console.log("Closing connections.");
+        ros.disconnect();
+        return false;
+      }
+      window.onbeforeunload = closeSession;
+      ros.on('error', function(error) {
+        console.log('ROS Master:  Error, check console.');
+        //printProperties(error);
+        document.getElementById('statusMessage').innerHTML = '<p>Error detected; check console.</p>';
+      });
+      ros.on('connection', function() {
+        console.log('ROS Master:  Connected.');
+        //printProperties(error);
+        document.getElementById('statusMessage').innerHTML = "<p style='color:green'>Connected!</p>";
+      });
+      ros.on('close', function() {
+        console.log('ROS Master:  Connection closed.');
+        //printProperties(error);
+        document.getElementById('statusMessage').innerHTML = "<p style='color:red'>Connection closed.</p>";
+      });
+      imageStream();
+    }
+
+    function imageStream() {
+      var image = document.getElementById('cameraImage');
+      image.src = "http://" + document.getElementById('hostname').value + ":8080/stream?topic=/raspicam_node/image_raw&quality=70";
+    }
+  </script>
+</head>
+
+<body onload="init()">
+
+  <h2>Walkerbot Control Panel</h2>
+
+  <table summary="hostname" border="1" bordercolor=lightgrey width=500>
+    <tr>
+      <td>Hostname: <input type="text" id="hostname" value="ubiquityrobot" onchange="init()" /><input type="submit" value="Connect" name="submit" onclick="init()" /></td>
+      <td>Connection status:
+        <div id="statusMessage">Initial value.</div>
+      </td>
+    </tr>
+  </table>
+
+  <table summary="parameters" border="0" width=500>
+    <tr>
+      <td>
+        <b> Set the Initial Parameters </b>
+        <br/>
+        <br/> 1. Drag Linear Speed Slider (Range: 0 to 0.2)
+        <br/><br/>
+
+        <div class="slidecontainer">
+          <input type="range" min="0" max="0.2" step=0.01 value="0" class="slider" id="linearSpeedID" /> Linear Speed Value: <span id="linearSpeedSliderOutput"></span>
+        </div>
+
+        <script>
+          var linearSpeedSlider = document.getElementById("linearSpeedID");
+          var linearSpeedOutput = document.getElementById("linearSpeedSliderOutput");
+          linearSpeedOutput.innerHTML = linearSpeedSlider.value; // Display the default slider value
+          // Update the current slider value (each time you drag the slider handle)
+          linearSpeedSlider.oninput = function() {
+            linearSpeedOutput.innerHTML = this.value;
+          }
+        </script>
+
+        <br/>
+        <br/> 2. Drag Angular Speed Slider (Range: 0 to 0.6)
+        <br/><br/>
+
+        <div class="slidecontainer">
+          <input type="range" min="0" max="0.6" step=0.01 value="0" class="slider" id="angularSpeedID" /> Angular Speed Value: <span id="angularSpeedSliderOutput"></span>
+        </div>
+
+        <script>
+          var angularSpeedSlider = document.getElementById("angularSpeedID");
+          var angularSpeedOutput = document.getElementById("angularSpeedSliderOutput");
+          angularSpeedOutput.innerHTML = angularSpeedSlider.value; // Display the default slider value
+          // Update the current slider value (each time you drag the slider handle)
+          angularSpeedSlider.oninput = function() {
+            angularSpeedOutput.innerHTML = this.value;
+          }
+        </script>
+
+        <br/>
+        <br/>
+
+      </td>
+    </tr>
+
+
+    <td>
+      <b> Touch Screen Control </b>
+      <br/>
+      <br/>
+
+      <script type="text/javascript">
+        function publishTurnMotorsOff() {
+          console.log("motors turned off");
+
+          twist = new ROSLIB.Topic({
+            ros: ros,
+            name: '/twist',
+            messageType: 'geometry_msgs/Twist'
+          });
+          twistMsg = new ROSLIB.Message({
+            linear: {
+              x: 0.0,
+              y: 0.0,
+              z: 0.0
+            },
+            angular: {
+              x: -0.0,
+              y: -0.0,
+              z: -0.0
+            }
+          });
+          twist.publish(twistMsg);
+
+        }
+
+        function publishMoveForwards() {
+          console.log("move forward");
+          twist = new ROSLIB.Topic({
+            ros: ros,
+            name: '/twist',
+            messageType: 'geometry_msgs/Twist'
+          });
+          var linearSpeedText = document.getElementById('linearSpeedID').value;
+          var linearSpeedNum = parseFloat(linearSpeedText, 10);
+          console.log(linearSpeedNum);
+          twistMsg = new ROSLIB.Message({
+            linear: {
+              x: linearSpeedNum,
+              y: 0.0,
+              z: 0.0
+            },
+            angular: {
+              x: -0.0,
+              y: -0.0,
+              z: -0.0
+            }
+          });
+          twist.publish(twistMsg);
+        }
+
+        function publishMoveBackwards() {
+          console.log("move backwards");
+          twist = new ROSLIB.Topic({
+            ros: ros,
+            name: '/twist',
+            messageType: 'geometry_msgs/Twist'
+          });
+          var linearSpeedText = document.getElementById('linearSpeedID').value;
+          var linearSpeedNum = parseFloat(linearSpeedText, 10);
+          console.log(linearSpeedNum);
+          twistMsg = new ROSLIB.Message({
+            linear: {
+              x: -linearSpeedNum,
+              y: 0.0,
+              z: 0.0
+            },
+            angular: {
+              x: -0.0,
+              y: -0.0,
+              z: -0.0
+            }
+          });
+          twist.publish(twistMsg);
+        }
+
+        function publishTurnLeft() {
+          console.log("turn left");
+          twist = new ROSLIB.Topic({
+            ros: ros,
+            name: '/twist',
+            messageType: 'geometry_msgs/Twist'
+          });
+          var angularSpeedText = document.getElementById('angularSpeedID').value;
+          var angularSpeedNum = parseFloat(angularSpeedText, 10);
+          console.log(angularSpeedNum);
+          twistMsg = new ROSLIB.Message({
+            linear: {
+              x: 0.0,
+              y: 0.0,
+              z: 0.0
+            },
+            angular: {
+              x: -0.0,
+              y: -0.0,
+              z: angularSpeedNum
+            }
+          });
+          twist.publish(twistMsg);
+        }
+
+        function publishTurnRight() {
+          console.log("turn right");
+          twist = new ROSLIB.Topic({
+            ros: ros,
+            name: '/twist',
+            messageType: 'geometry_msgs/Twist'
+          });
+          var angularSpeedText = document.getElementById('angularSpeedID').value;
+          var angularSpeedNum = parseFloat(angularSpeedText, 10);
+          console.log(angularSpeedNum);
+          twistMsg = new ROSLIB.Message({
+            linear: {
+              x: 0.0,
+              y: 0.0,
+              z: 0.0
+            },
+            angular: {
+              x: -0.0,
+              y: -0.0,
+              z: -angularSpeedNum
+            }
+          });
+          twist.publish(twistMsg);
+        }
+
+        var setintForwards = '';
+        $(document).ready(function() {
+          var valForwards = 0;
+          $('#forwards').on('mousedown', function(e) {
+            clearInterval(setintForwards);
+            valForwards = 0;
+            setintForwards = setInterval(function() {
+              publishMoveForwards();
+              console.log("mousehold");
+            }, 5);
+          });
+          $('#forwards').on("mouseleave mouseup", function() {
+            publishTurnMotorsOff();
+            clearInterval(setintForwards);
+          });
+        });
+
+        var setintLeft = '';
+        $(document).ready(function() {
+          var valLeft = 0;
+          $('#left').on('mousedown', function(e) {
+            clearInterval(setintLeft);
+            valLeft = 0;
+            setintLeft = setInterval(function() {
+              publishTurnLeft();
+              console.log("mousehold");
+            }, 5);
+          });
+          $('#left').on("mouseleave mouseup", function() {
+            publishTurnMotorsOff();
+            clearInterval(setintLeft);
+          });
+        });
+
+        var setintRight = '';
+        $(document).ready(function() {
+          var valRight = 0;
+          $('#right').on('mousedown', function(e) {
+            clearInterval(setintRight);
+            valRight = 0;
+            setintRight = setInterval(function() {
+              publishTurnRight();
+              console.log("mousehold");
+            }, 5);
+          });
+          $('#right').on("mouseleave mouseup", function() {
+            publishTurnMotorsOff();
+            clearInterval(setintRight);
+          });
+        });
+
+        var setintBackwards = '';
+        $(document).ready(function() {
+          var valBackwards = 0;
+          $('#backwards').on('mousedown', function(e) {
+            clearInterval(setintBackwards);
+            valBackwards = 0;
+            setintBackwards = setInterval(function() {
+              publishMoveBackwards();
+              console.log("mousehold");
+            }, 5);
+          });
+          $('#backwards').on("mouseleave mouseup", function() {
+            publishTurnMotorsOff();
+            clearInterval(setintBackwards);
+          });
+        });
+
+      </script>
+
+      <div style="text-align:center;width:480px;">
+
+        <button class="btn green" id="forwards">FORWARDS</button><br><br>
+        <button class="btn green" id="left">LEFT</button>
+        <button class="btn red" onmousedown="publishTurnMotorsOff()" onmouseup="publishTurnMotorsOff()">STOP</button>
+        <button class="btn green" id="right">RIGHT</button><br><br>
+        <button class="btn green" id="backwards">BACKWARDS</button><br><br>
+
+      </div>
+
+    </td>
+
+    <tr>
+      <td>
+        <b> Video Live Stream </b>
+
+        <div id="camera"></div>
+
+        <img id="cameraImage" alt="Camera image" src="nocamera.jpg" width=320/>
+
+      </td>
+    </tr>
+
+    <tr>
+      <td>Make sure you run <pre>rosrun web_video_server web_video_server</pre> and the image stream.
+        <br/> Topic: <input type="text" id="imagetopic" value="/walkerbotweb/image_raw" onchange="imageStream()" />
+      </td>
+    </tr>
+  </table>
+
+</body>
+
+</html>
